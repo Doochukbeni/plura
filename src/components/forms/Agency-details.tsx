@@ -73,6 +73,7 @@ const AgencyDetails = ({ data }: AgencyDetailProps) => {
   const { toast } = useToast();
   const router = useRouter();
   const [deletingAgency, setDeletingAgency] = useState<boolean>(false);
+
   const form = useForm<z.infer<typeof FormSchema>>({
     mode: "onChange",
     resolver: zodResolver(FormSchema),
@@ -95,7 +96,6 @@ const AgencyDetails = ({ data }: AgencyDetailProps) => {
   const handleSubmit = async (values: z.infer<typeof FormSchema>) => {
     try {
       let newUserData;
-      let customerId;
       if (!data?.id) {
         const bodyData = {
           email: values.companyEmail,
@@ -120,31 +120,28 @@ const AgencyDetails = ({ data }: AgencyDetailProps) => {
       }
 
       newUserData = await initUser({ role: "AGENCY_OWNER" });
-      if (!data?.id) return;
+      if (!data?.id) {
+        await upsertAgency({
+          id: data?.id ? data.id : v4(),
 
-      const response = await upsertAgency({
-        id: data?.id ? data.id : v4(),
-
-        address: values.address,
-        agencyLogo: values.agencyLogo,
-        city: values.city,
-        companyPhone: values.companyPhone,
-        country: values.country,
-        name: values.name,
-        state: values.state,
-        whiteLabel: values.WhiteLabel,
-        zipCode: values.zipCode,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        companyEmail: values.companyEmail,
-        connectAccountId: "",
-        goal: 5,
-      });
-      toast({
-        title: "Created Agency",
-      });
-      if (data?.id) return router.refresh();
-      if (response) {
+          address: values.address,
+          agencyLogo: values.agencyLogo,
+          city: values.city,
+          companyPhone: values.companyPhone,
+          country: values.country,
+          name: values.name,
+          state: values.state,
+          whiteLabel: values.WhiteLabel,
+          zipCode: values.zipCode,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          companyEmail: values.companyEmail,
+          connectAccountId: "",
+          goal: 5,
+        });
+        toast({
+          title: "Created Agency",
+        });
         return router.refresh();
       }
     } catch (error) {
@@ -217,6 +214,7 @@ const AgencyDetails = ({ data }: AgencyDetailProps) => {
                         value={field.value}
                       />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -231,6 +229,7 @@ const AgencyDetails = ({ data }: AgencyDetailProps) => {
                       <FormControl>
                         <Input placeholder="Your agency name" {...field} />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -245,6 +244,7 @@ const AgencyDetails = ({ data }: AgencyDetailProps) => {
                       <FormControl>
                         <Input placeholder="Email" {...field} />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -261,6 +261,7 @@ const AgencyDetails = ({ data }: AgencyDetailProps) => {
                       <FormControl>
                         <Input placeholder="Phone" {...field} />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -287,6 +288,7 @@ const AgencyDetails = ({ data }: AgencyDetailProps) => {
                         onCheckedChange={field.onChange}
                       />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -301,6 +303,7 @@ const AgencyDetails = ({ data }: AgencyDetailProps) => {
                       <FormControl>
                         <Input placeholder="Your agency address" {...field} />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -316,6 +319,7 @@ const AgencyDetails = ({ data }: AgencyDetailProps) => {
                       <FormControl>
                         <Input placeholder="Your agency city" {...field} />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -329,6 +333,7 @@ const AgencyDetails = ({ data }: AgencyDetailProps) => {
                       <FormControl>
                         <Input placeholder="Zipcode" {...field} />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -342,6 +347,7 @@ const AgencyDetails = ({ data }: AgencyDetailProps) => {
                       <FormControl>
                         <Input placeholder="State" {...field} />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -356,6 +362,7 @@ const AgencyDetails = ({ data }: AgencyDetailProps) => {
                     <FormControl>
                       <Input placeholder="Country" {...field} />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -389,7 +396,10 @@ const AgencyDetails = ({ data }: AgencyDetailProps) => {
 
               <Button type="submit" disabled={isLoading}>
                 {isLoading ? (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <div className="flex items-center">
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    <p className="text-muted-foreground">Loading ...</p>
+                  </div>
                 ) : (
                   "Save agency information"
                 )}
