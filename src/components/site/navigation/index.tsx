@@ -14,7 +14,7 @@ const Navigation = ({ user }: Props) => {
   console.log(user);
 
   return (
-    <div className="p-4 flex items-center justify-between relative">
+    <div className="fixed top-0 right-0 left-0 p-4 flex items-center justify-between z-10">
       <aside className="flex items-center gap-2">
         <Image
           src="/assets/plura-logo.svg"
@@ -33,9 +33,12 @@ const Navigation = ({ user }: Props) => {
         </ul>
       </nav>
       <aside className="flex  gap-2 items-center">
-        <Link href="/agency/auth/sign-in" className={buttonVariants()}>
-          Login
-        </Link>
+        {!user && (
+          <Link href="/agency" className={buttonVariants()}>
+            Login
+          </Link>
+        )}
+
         <UserButton />
         <ModeToggle />
       </aside>
