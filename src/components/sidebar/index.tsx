@@ -1,5 +1,4 @@
 import { getAuthUserDetails } from "@/lib/queries";
-import React from "react";
 import MenuOptions from "./MenuOptions";
 
 interface SidebarProps {
