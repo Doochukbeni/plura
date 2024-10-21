@@ -274,10 +274,10 @@ const AgencyDetails = ({ data }: AgencyDetailProps) => {
                 render={({ field }) => (
                   <FormItem className="flex flex-row items-center justify-between rounded-lg border gap-4 p-4 ">
                     <div>
-                      <FormLabel>WhiteLabel AGency</FormLabel>
+                      <FormLabel>WhiteLabel Agency</FormLabel>
                       <FormDescription>
                         {" "}
-                        Turning on whitelabel mode will show your agency logo to
+                        Turning on whiteLabel mode will show your agency logo to
                         all sub accounts by default. you can overwrite this
                         functionality through sub account settings
                       </FormDescription>

@@ -19,7 +19,7 @@ const FileUpload = ({ apiEndpoint, onchange, value }: FileUploadProps) => {
             <Image
               src={value}
               alt="upload image"
-              className="object-contain"
+              className="object-contain rounded-md"
               fill
             />
           </div>

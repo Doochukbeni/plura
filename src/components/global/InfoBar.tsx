@@ -17,6 +17,7 @@ import { Card } from "../ui/card";
 import { Switch } from "../ui/switch";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { AvatarImage } from "@radix-ui/react-avatar";
+import { ModeToggle } from "./ModeToggle";
 
 interface InfoBarProps {
   notifications: NotificationWithUser | [];
@@ -118,6 +119,7 @@ const InfoBar = ({
             )}
           </SheetContent>
         </Sheet>
+        <ModeToggle />
       </div>
     </div>
   );
