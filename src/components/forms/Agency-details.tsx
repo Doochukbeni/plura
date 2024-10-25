@@ -276,7 +276,6 @@ const AgencyDetails = ({ data }: AgencyDetailProps) => {
                     <div>
                       <FormLabel>WhiteLabel Agency</FormLabel>
                       <FormDescription>
-                        {" "}
                         Turning on whiteLabel mode will show your agency logo to
                         all sub accounts by default. you can overwrite this
                         functionality through sub account settings

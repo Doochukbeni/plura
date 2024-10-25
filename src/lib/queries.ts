@@ -276,7 +276,7 @@ export const upsertAgency = async (agency: Agency, price?: Plan) => {
             {
               name: "Sub Accounts",
               icon: "person",
-              link: `/agency/${agency.id}/all-subaccounts`,
+              link: `/agency/${agency.id}/allsubaccounts`,
             },
             {
               name: "Team",
@@ -441,4 +441,24 @@ export const changeUserPermission = async (
   } catch (error) {
     console.log("⛔ COULD NOT CHANGE USER PERMISSION", error);
   }
+};
+
+export const getSubaccountDetails = async (subaccountId: string) => {
+  const response = await db.subAccount.findUnique({
+    where: {
+      id: subaccountId,
+    },
+  });
+
+  return response;
+};
+
+export const deleteSubaccount = async (subaccountId: string) => {
+  const response = await db.subAccount.delete({
+    where: {
+      id: subaccountId,
+    },
+  });
+
+  return response;
 };
