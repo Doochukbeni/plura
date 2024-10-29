@@ -43,6 +43,7 @@ export const saveActivitylogsNotification = async ({
 }) => {
   const authUser = await currentUser();
   let userData;
+
   if (!authUser) {
     const response = await db.user.findFirst({
       where: {
@@ -311,26 +312,106 @@ export const getNotificationAndUser = async (agencyId: string) => {
   }
 };
 
-export const upsertSubAccount = async (subaccount: SubAccount) => {
-  if (!subaccount.companyEmail) return null;
+// export const upsertSubAccount = async (subAccount: SubAccount) => {
+//   if (!subAccount.companyEmail) return null;
+//   const agencyOwner = await db.user.findFirst({
+//     where: {
+//       Agency: {
+//         id: subAccount.agencyId,
+//       },
+//       role: "AGENCY_OWNER",
+//     },
+//   });
 
+//   if (!agencyOwner) return console.log("error could not create subAccount");
+
+//   const permissionId = v4();
+//   const response = await db.subAccount.upsert({
+//     where: { id: subAccount.id },
+//     update: subAccount,
+//     create: {
+//       ...subAccount,
+//       Permissions: {
+//         create: {
+//           access: true,
+//           email: agencyOwner.email,
+//           id: permissionId,
+//         },
+//         connect: {
+//           subAccountId: subAccount.id,
+//           id: permissionId,
+//         },
+//       },
+//       Pipeline: {
+//         create: { name: "Lead Cycle" },
+//       },
+//       SidebarOption: {
+//         create: [
+//           {
+//             name: "Launchpad",
+//             icon: "clipboardIcon",
+//             link: `/subaccount/${subAccount.id}/launchpad`,
+//           },
+//           {
+//             name: "Settings",
+//             icon: "settings",
+//             link: `/subaccount/${subAccount.id}/settings`,
+//           },
+//           {
+//             name: "Funnels",
+//             icon: "pipeline",
+//             link: `/subaccount/${subAccount.id}/funnels`,
+//           },
+
+//           {
+//             name: "Media",
+//             icon: "database",
+//             link: `/subaccount/${subAccount.id}/media`,
+//           },
+//           {
+//             name: "Automation",
+//             icon: "chip",
+//             link: `/subaccount/${subAccount.id}/automation`,
+//           },
+//           {
+//             name: "Pipeline",
+//             icon: "flag",
+//             link: `/subaccount/${subAccount.id}/pipeline`,
+//           },
+//           {
+//             name: "Contacts",
+//             icon: "person",
+//             link: `/subaccount/${subAccount.id}/contacts`,
+//           },
+//           {
+//             name: "Dashboard",
+//             icon: "category",
+//             link: `/subaccount/${subAccount.id}`,
+//           },
+//         ],
+//       },
+//     },
+//   });
+//   return response;
+// };
+
+export const upsertSubAccount = async (subAccount: SubAccount) => {
+  if (!subAccount.companyEmail) return null;
   const agencyOwner = await db.user.findFirst({
     where: {
       Agency: {
-        id: subaccount.agencyId,
+        id: subAccount.agencyId,
       },
       role: "AGENCY_OWNER",
     },
   });
-
-  if (!agencyOwner) return console.log("error could not create subaccount");
-
+  if (!agencyOwner) return console.log("🔴Erorr could not create subaccount");
   const permissionId = v4();
   const response = await db.subAccount.upsert({
-    where: { id: subaccount.id },
-    update: subaccount,
+    where: { id: subAccount.id },
+    update: subAccount,
     create: {
-      ...subaccount,
+      ...subAccount,
       Permissions: {
         create: {
           access: true,
@@ -338,7 +419,7 @@ export const upsertSubAccount = async (subaccount: SubAccount) => {
           id: permissionId,
         },
         connect: {
-          subAccountId: subaccount.id,
+          subAccountId: subAccount.id,
           id: permissionId,
         },
       },
@@ -350,43 +431,42 @@ export const upsertSubAccount = async (subaccount: SubAccount) => {
           {
             name: "Launchpad",
             icon: "clipboardIcon",
-            link: `/subaccount/${subaccount.id}/launchpad`,
+            link: `/subaccount/${subAccount.id}/launchpad`,
           },
           {
             name: "Settings",
             icon: "settings",
-            link: `/subaccount/${subaccount.id}/settings`,
+            link: `/subaccount/${subAccount.id}/settings`,
           },
           {
             name: "Funnels",
-            icon: "pipeline",
-            link: `/subaccount/${subaccount.id}/funnels`,
+            icon: "pipelines",
+            link: `/subaccount/${subAccount.id}/funnels`,
           },
-
           {
             name: "Media",
             icon: "database",
-            link: `/subaccount/${subaccount.id}/media`,
+            link: `/subaccount/${subAccount.id}/media`,
           },
           {
-            name: "Automation",
+            name: "Automations",
             icon: "chip",
-            link: `/subaccount/${subaccount.id}/automation`,
+            link: `/subaccount/${subAccount.id}/automations`,
           },
           {
-            name: "Pipeline",
+            name: "Pipelines",
             icon: "flag",
-            link: `/subaccount/${subaccount.id}/pipeline`,
+            link: `/subaccount/${subAccount.id}/pipelines`,
           },
           {
             name: "Contacts",
             icon: "person",
-            link: `/subaccount/${subaccount.id}/contacts`,
+            link: `/subaccount/${subAccount.id}/contacts`,
           },
           {
             name: "Dashboard",
             icon: "category",
-            link: `/subaccount/${subaccount.id}`,
+            link: `/subaccount/${subAccount.id}`,
           },
         ],
       },
@@ -394,7 +474,6 @@ export const upsertSubAccount = async (subaccount: SubAccount) => {
   });
   return response;
 };
-
 export const getUserPermissions = async (userId: string) => {
   const response = await db.user.findUnique({
     where: { id: userId },

@@ -2,8 +2,8 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { v4 } from "uuid";
 import * as z from "zod";
+import { v4 } from "uuid";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -16,22 +16,24 @@ import {
 } from "@/components/ui/form";
 import { useRouter } from "next/navigation";
 
+import { Input } from "@/components/ui/input";
 import {
   Card,
-  CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
+  CardDescription,
+  CardContent,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 
-import { useToast } from "@/hooks/use-toast";
-import { saveActivitylogsNotification, upsertSubAccount } from "@/lib/queries";
-import { useModal } from "@/providers/modal-provider";
-import { Agency, SubAccount } from "@prisma/client";
-import { useEffect } from "react";
 import FileUpload from "../global/file-upload";
+import { Agency, SubAccount } from "@prisma/client";
+// import { useToast } from "../ui/use-toast";
+// import { saveActivityLogsNotification, upsertSubAccount } from "@/lib/queries";
+import { useEffect } from "react";
 import Loading from "../global/loading";
+import { useModal } from "@/providers/modal-provider";
+import { saveActivitylogsNotification, upsertSubAccount } from "@/lib/queries";
+import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
   name: z.string(),
@@ -183,7 +185,7 @@ const SubAccountDetails: React.FC<SubAccountDetailsProps> = ({
                 name="companyEmail"
                 render={({ field }) => (
                   <FormItem className="flex-1">
-                    <FormLabel>Acount Email</FormLabel>
+                    <FormLabel>Account Email</FormLabel>
                     <FormControl>
                       <Input placeholder="Email" {...field} />
                     </FormControl>
@@ -199,7 +201,7 @@ const SubAccountDetails: React.FC<SubAccountDetailsProps> = ({
                 name="companyPhone"
                 render={({ field }) => (
                   <FormItem className="flex-1">
-                    <FormLabel>Acount Phone Number</FormLabel>
+                    <FormLabel>Account Phone Number</FormLabel>
                     <FormControl>
                       <Input placeholder="Phone" required {...field} />
                     </FormControl>
@@ -258,7 +260,7 @@ const SubAccountDetails: React.FC<SubAccountDetailsProps> = ({
                 name="zipCode"
                 render={({ field }) => (
                   <FormItem className="flex-1">
-                    <FormLabel>Zipcpde</FormLabel>
+                    <FormLabel>Zipcode</FormLabel>
                     <FormControl>
                       <Input required placeholder="Zipcode" {...field} />
                     </FormControl>

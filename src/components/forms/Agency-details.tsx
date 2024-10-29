@@ -60,12 +60,12 @@ const FormSchema = z.object({
     .min(2, { message: "Agency name must be more than 2 characters" }),
   companyEmail: z.string().min(1),
   companyPhone: z.string().min(1),
+  WhiteLabel: z.boolean(),
   address: z.string().min(1),
   city: z.string().min(1),
   zipCode: z.string().min(1),
   state: z.string().min(1),
   country: z.string().min(1),
-  WhiteLabel: z.boolean(),
   agencyLogo: z.string().min(1),
 });
 
@@ -81,17 +81,23 @@ const AgencyDetails = ({ data }: AgencyDetailProps) => {
       name: data?.name,
       companyEmail: data?.companyEmail,
       companyPhone: data?.companyPhone,
+      WhiteLabel: data?.whiteLabel || false,
       address: data?.address,
       city: data?.city,
       zipCode: data?.zipCode,
       state: data?.state,
       country: data?.country,
-      WhiteLabel: data?.whiteLabel || false,
       agencyLogo: data?.agencyLogo,
     },
   });
 
   const isLoading = form.formState.isSubmitting;
+
+  useEffect(() => {
+    if (data) {
+      form.reset(data);
+    }
+  }, [data]);
 
   const handleSubmit = async (values: z.infer<typeof FormSchema>) => {
     try {
@@ -108,6 +114,7 @@ const AgencyDetails = ({ data }: AgencyDetailProps) => {
               postal_code: values.zipCode,
               state: values.zipCode,
             },
+            name: values.name,
           },
           address: {
             city: values.city,
@@ -123,7 +130,6 @@ const AgencyDetails = ({ data }: AgencyDetailProps) => {
       if (!data?.id) {
         await upsertAgency({
           id: data?.id ? data.id : v4(),
-
           address: values.address,
           agencyLogo: values.agencyLogo,
           city: values.city,
@@ -177,12 +183,6 @@ const AgencyDetails = ({ data }: AgencyDetailProps) => {
 
     setDeletingAgency(false);
   };
-
-  useEffect(() => {
-    if (data) {
-      form.reset(data);
-    }
-  }, [data]);
 
   return (
     <AlertDialog>
